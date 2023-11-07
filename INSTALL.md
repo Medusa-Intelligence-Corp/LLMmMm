@@ -1,17 +1,10 @@
 # INSTALLATION
 
-a template project for machine learning experiments, using dockerized pytorch environments and data downloaders
-
 # Requirements
 
 * [docker](https://www.docker.com/)
 * a bash shell
-
-
-
-# Optional Dependencies
-* OpenAI key if you are using scikit-llm
-* for GPU users [nvidia container toolkit](https://github.com/NVIDIA/nvidia-container-toolkit)
+* An OpenAI API Key
 
 # Setting up your openAI api key
 
@@ -63,58 +56,3 @@ Remember to replace `'your-api-key-here'` with your actual OpenAI API key in eac
 
 * Build the docker image by using ```sh build-docker-image.sh```
 * start your training environment by running ```sh run-training-environment.sh``` or ```sh gpu-environment.sh``` and follow the link to the jupyter server
-* Use a [downloader](./downloader/) to download a dataset into the [data](./data/) folder
-* Run a [training notebook](./training_notebooks) to fit your model
-* Export your model to the [saved models](./saved_models) folder
-* Shrink, optimize, and deploy your model, see [deploy](./deploy) for examples 
-
-# Frequently Asked Questions
-
-### Will this run on Windows or macOS?
-
-Not really, but you can try if you must. Specifically the pytorch docker image has known issues on M1 macs, if you want a less fancy environment that you might be able to run on your mac change ```pytorch:latest``` to ```ubuntu:latest``` in the dockerfile, and add ```pip install scikitlearn``` or something like that.
-
-I asked ChatGPT to rewrite the dockerfile so it is less fancy and here's what it said, if you are on a mac you can use the text below as your dockerfile instead:
-
-```
-# Start from the latest Ubuntu image
-FROM ubuntu:latest
-
-# Set the non-interactive mode for tzdata (prevents the interactive timezone query)
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Update the system and install necessary software
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
-
-# Upgrade pip to the latest version
-RUN pip3 install --upgrade pip
-
-# Install Jupyter Notebook, openai, scikit-learn, matplotlib and other useful stuff.
-RUN pip install jupyter openai scikit-llm scikit-learn matplotlib numpy pandas seaborn
-
-# Set up the working directory
-RUN mkdir /workspace
-WORKDIR /workspace
-
-# Change the ownership and permissions of /.local and /workspace
-RUN mkdir /.local /.jupyter
-RUN chmod -R 777 /.local /.jupyter /workspace
-
-# When the container launches, start a Jupyter Notebook server
-CMD ["jupyter", "notebook", "--ip='*'", "--port=8888", "--no-browser"]
-```
-
-### How to I shut down the notebook?
-
-Go to the terminal where you ran the ```run-training....sh``` and press ```CTRL+C```, [WTF](https://medium.com/@aantipov/what-happens-when-you-ctrl-c-in-the-terminal-36b093443e06)
-
-### What the hell is this notebook stuff?
-
-Try this tutorial to learn more [tutorial](https://jupyter.org/try)
-
-### Can I deploy this in a cloud environment via Docker? or run it on my big ML rig with many nvidia GPUs?
-
-Hell yes you can! I'll eventually write a more detailed guide here on how to do that, but the setup is almost identical to running locally.

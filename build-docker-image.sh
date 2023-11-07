@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build -t pytorch-jupyter-openai .
+sudo docker build -t sommelier .
