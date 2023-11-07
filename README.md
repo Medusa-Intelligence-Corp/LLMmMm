@@ -14,7 +14,7 @@ See [INSTALL.md](./INSTALL.md)
 * ```bash run-app.sh```
 * visit ```localhost:5000``` from your web browser
 
-[Screenshot](./screenshot.png)
+![Screenshot](./screenshot.png)
 
 # editing
 
