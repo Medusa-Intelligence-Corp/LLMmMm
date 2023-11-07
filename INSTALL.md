@@ -52,7 +52,3 @@ Setting up an environment variable for your OpenAI API key across different oper
 Remember to replace `'your-api-key-here'` with your actual OpenAI API key in each of the steps above.
 
 
-# Getting Started
-
-* Build the docker image by using ```sh build-docker-image.sh```
-* start your training environment by running ```sh run-training-environment.sh``` or ```sh gpu-environment.sh``` and follow the link to the jupyter server
