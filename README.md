@@ -14,6 +14,8 @@ See [INSTALL.md](./INSTALL.md)
 * ```bash run-app.sh```
 * visit ```localhost:5000``` from your web browser
 
+[Screenshot](./screenshot.png)
+
 # editing
 
 This app is for educational purposes so all of the logic and templating is in the ```app.py``` file, and all of the dependencies are in the ```Dockerfile```. 
