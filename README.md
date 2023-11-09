@@ -1,6 +1,6 @@
 # Sommelier
 
-A simple flask app that connects to the OpenAI API.
+A simple flask app that connects to the OpenAI API. For teaching purposes.
 
 # Prerequisites
 
