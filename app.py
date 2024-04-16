@@ -2,6 +2,7 @@ import os
 import json
 
 import requests
+import bleach
 
 from flask import Flask, jsonify, request, render_template_string
 #from flask_cors import CORS
@@ -39,7 +40,38 @@ def analyze_menu_item(menu_text):
         ]
       })
     )
-    return response
+    
+    response_data = response.json()
+
+    if 'choices' in response_data and len(response_data['choices']) > 0:
+        text_response = response_data['choices'][0].get('message', 'No response text found.')
+        return text_response
+        # Define a whitelist of allowed tags and attributes
+        allowed_tags = [
+            'p',  # Paragraph
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',  # Headings
+            'strong', 'b',  # Bold
+            'em', 'i',  # Italics
+            'u',  # Underline
+            's', 'strike',  # Strikethrough
+            'blockquote',  # Blockquote for quotations
+            'ul', 'ol', 'li',  # Unordered and ordered lists
+            'a',  # Hyperlinks
+            'br',  # Line break
+            'hr',  # Horizontal rule
+            'span',  # Span for inline elements
+            'code', 'pre',  # Code blocks and preformatted text
+            'sup', 'sub',  # Superscript and subscript
+            'dl', 'dt', 'dd',  # Description lists
+        ]
+
+        allowed_attributes = {}
+
+        # Use bleach to clean the HTML
+        sanitized_html = bleach.clean(html_content,\
+                tags=allowed_tags, attributes=allowed_attributes, strip=True)
+    else:
+        return "error"
 
 # @validate_origin # add this after @app.route
 @app.route('/api/v1/pairings', methods=['POST'])
@@ -48,8 +80,7 @@ def pairings():
     # curl -X POST http://localhost:5000/api/v1/pairings -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'
     data = request.json
     analysis = analyze_menu_item(data['menu_item'])
-    print(analysis)
-    return jsonify(analysis="test"), 200
+    return jsonify(analysis=analysis), 200
 
 
 if __name__ == '__main__':

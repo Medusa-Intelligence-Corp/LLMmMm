@@ -14,3 +14,9 @@ See [INSTALL.md](./INSTALL.md)
 * ```bash runp.sh```
 * visit ```index.html``` from your web browser
 
+# TODO
+
+* Add better html sanitizing
+* Add simple static homepage
+* Add CORS to prevent API leakage
+
