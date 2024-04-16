@@ -1,4 +1,4 @@
-# Sommelier
+# LLMmMm
 
 A simple flask API and static webpage that connects to OpenRouter
 
