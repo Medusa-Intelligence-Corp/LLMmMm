@@ -5,19 +5,19 @@ import requests
 import bleach
 
 from flask import Flask, jsonify, request, render_template_string
-#from flask_cors import CORS
+from flask_cors import CORS
 
 app = Flask(__name__)
 
-#CORS(app, resources={r"/api/*": {"origins": "https://yourwebsite.com"}})
+CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
-#def validate_origin(func):
-#    def wrapper(*args, **kwargs):
-#        # Validate the request origin
-#        if request.headers.get('Origin') != 'https://yourwebsite.com':
-#            return jsonify({'error': 'Forbidden'}), 403
-#        return func(*args, **kwargs)
-#    return wrapper
+def validate_origin(func):
+    def wrapper(*args, **kwargs):
+        # Validate the request origin
+        if request.headers.get('Origin') != 'https://llmmmm.com':
+            return jsonify({'error': 'Forbidden'}), 403
+        return func(*args, **kwargs)
+    return wrapper
 
 
 def analyze_menu_item(menu_text):
@@ -25,8 +25,8 @@ def analyze_menu_item(menu_text):
       url="https://openrouter.ai/api/v1/chat/completions",
       headers={
         "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY')}",
-        #"HTTP-Referer": f"{YOUR_SITE_URL}", # Optional, for including your app on openrouter.ai rankings.
-        #"X-Title": f"{YOUR_APP_NAME}", # Optional. Shows in rankings on openrouter.ai.
+        "HTTP-Referer": "https://llmmmm.com", # Optional, for including your app on openrouter.ai rankings.
+        "X-Title": "LLMmMm", # Optional. Shows in rankings on openrouter.ai.
       },
       data=json.dumps({
         "model": "mistralai/mistral-7b-instruct:free", # Choose from https://openrouter.ai/docs#models 
