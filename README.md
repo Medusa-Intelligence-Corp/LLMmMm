@@ -4,7 +4,9 @@ A simple flask API and static webpage that connects to OpenRouter
 
 # Prerequisites
 
-See [INSTALL.md](./INSTALL.md)
+* docker
+* a bash shell
+* an ```OPENROUTER_API_KEY``` saved as an environment variable (look it up)
 
 # Running the code
 
