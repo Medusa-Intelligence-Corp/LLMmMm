@@ -1,79 +1,56 @@
-from flask import Flask, jsonify, request, render_template_string
 import os
-import openai
+import json
+
+import requests
+
+from flask import Flask, jsonify, request, render_template_string
+#from flask_cors import CORS
 
 app = Flask(__name__)
 
-# Your OpenAI API key should be set in your environment variables
-openai.api_key = os.environ.get('OPENAI_API_KEY')
+#CORS(app, resources={r"/api/*": {"origins": "https://yourwebsite.com"}})
+
+#def validate_origin(func):
+#    def wrapper(*args, **kwargs):
+#        # Validate the request origin
+#        if request.headers.get('Origin') != 'https://yourwebsite.com':
+#            return jsonify({'error': 'Forbidden'}), 403
+#        return func(*args, **kwargs)
+#    return wrapper
+
 
 def analyze_menu_item(menu_text):
-    messages = [
-        {
-            "role": "user",
-            "content": f"""Embrace the role of a master sommelier. I will present you with a selection from the menu, and your task is to provide the best wine pairings to pair with a given menu item. For each dish, specify the ideal wine variety, region, vintage, and any pertinent pairing nuances. Should a dish favor an alternative beverage—be it beer, coffee, cocktail, or another—advise accordingly. Your recommendations should be captivating and informed, as they are crucial for my professional endeavors. Also please format your response in html and add emojis for flair.
+    response = requests.post(
+      url="https://openrouter.ai/api/v1/chat/completions",
+      headers={
+        "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY')}",
+        #"HTTP-Referer": f"{YOUR_SITE_URL}", # Optional, for including your app on openrouter.ai rankings.
+        #"X-Title": f"{YOUR_APP_NAME}", # Optional. Shows in rankings on openrouter.ai.
+      },
+      data=json.dumps({
+        "model": "mistralai/mistral-7b-instruct:free", # Choose from https://openrouter.ai/docs#models 
+        "messages": [
+          {"role": "user", "content": f"""Embrace the role of a master sommelier. I will present you with a selection from the menu, and your task is to provide the best wine pairings to pair with a given menu item. For each dish, specify the ideal wine variety, region, vintage, and any pertinent pairing nuances. Should a dish favor an alternative beverage—be it beer, coffee, cocktail, or another—advise accordingly. Your recommendations should be captivating and informed, as they are crucial for my professional endeavors. Also please format your response in html and add emojis for flair.
 
-Menu item: 
-{menu_text}
-"""
-        }
-    ]
-    response = openai.chat.completions.create(
-        model="gpt-4",
-        messages=messages
+    Menu item: 
+    {menu_text}
+    """
+    }
+        ]
+      })
     )
-    return response.choices[0].message.content
+    return response
 
-@app.route('/', methods=['GET', 'POST'])
-def homepage():
-    if request.method == 'POST':
-        menu_item = request.form['menu_item']
-        analysis = analyze_menu_item(menu_item)
-        return render_template_string(HOME_TEMPLATE, result=analysis, menu_item=menu_item)
-    return render_template_string(HOME_TEMPLATE)
-
+# @validate_origin # add this after @app.route
 @app.route('/api/v1/pairings', methods=['POST'])
 def pairings():
     # Use this endpoint with the following curl command:
     # curl -X POST http://localhost:5000/api/v1/pairings -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'
     data = request.json
     analysis = analyze_menu_item(data['menu_item'])
-    return jsonify(analysis=analysis), 200
+    print(analysis)
+    return jsonify(analysis="test"), 200
 
-# Improved HTML template with inline CSS
-HOME_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Item Analysis</title>
-    <script>
-        function showAnalyzingText() {
-            document.getElementById('analyze-button').value = 'Analyzing...';
-            document.getElementById('analyze-button').disabled = true;
-            document.getElementById('loading').style.display = 'block';
-        }
-    </script>
-</head>
-<body>
-    <h1>Robot Sommelier</h1>
-    <img src="{{ url_for('static', filename='robot.png') }}" height=400 width=400>
-    <form action="/" method="post" onsubmit="showAnalyzingText()">
-        <label for="menu_item">Enter a menu item:</label>
-        <input type="text" id="menu_item" name="menu_item" value="{{ menu_item|default('') }}" required>
-        <input type="submit" id="analyze-button" value="Analyze">
-        <div id="loading" style="display: none;">...</div>
-    </form>
-    {% if result %}
-        <div class="result">
-            <h2>Analysis Result:</h2>
-            {{ result | safe }}
-        </div>
-    {% endif %}
-</body>
-</html>
-"""
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -1,6 +1,6 @@
 # Sommelier
 
-A simple flask app that connects to the OpenAI API. For teaching purposes.
+A simple flask API and static webpage that connects to OpenRouter
 
 # Prerequisites
 
@@ -10,12 +10,7 @@ See [INSTALL.md](./INSTALL.md)
 
 * clone this repository
 * ```cd``` to the project directory
-* ```bash build-docker-image.sh```
-* ```bash run-app.sh```
-* visit ```localhost:5000``` from your web browser
+* ```bash build.sh```
+* ```bash runp.sh```
+* visit ```index.html``` from your web browser
 
-![Screenshot](./screenshot.png)
-
-# editing
-
-This app is for educational purposes so all of the logic and templating is in the ```app.py``` file, and all of the dependencies are in the ```Dockerfile```. 
