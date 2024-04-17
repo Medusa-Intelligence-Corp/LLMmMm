@@ -11,8 +11,6 @@ A free and open source LLM-powered Sommelier. Try it now at [LLMmMm.com](https:/
 * ```bash build.sh```
 * ```bash run.sh```
 
-Here's an improved version of your guide for the GitHub README.md:
-
 # Production Setup Guide
 
 This guide will walk you through the steps to set up your Flask server with SSL using Nginx on a Debian or Ubuntu-based system.
