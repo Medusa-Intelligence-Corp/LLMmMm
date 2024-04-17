@@ -9,8 +9,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-#CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
 def validate_origin(func):
     def wrapper(*args, **kwargs):
@@ -45,8 +44,10 @@ def analyze_menu_item(menu_text):
     response_data = response.json()
 
     if 'choices' in response_data and len(response_data['choices']) > 0:
-        text_response = response_data['choices'][0].get('message', 'No response text found.')
-        return text_response
+        text_response = response_data['choices'][0]\
+                .get('message', 'No response text found.')\
+                .get('content','No content found.')
+
         # Define a whitelist of allowed tags and attributes
         allowed_tags = [
             'p',  # Paragraph
@@ -69,14 +70,14 @@ def analyze_menu_item(menu_text):
         allowed_attributes = {}
 
         # Use bleach to clean the HTML
-        sanitized_html = bleach.clean(html_content,\
-                tags=allowed_tags, attributes=allowed_attributes, strip=True)
+        sanitized_html = bleach.clean(text_response,\
+                tags=allowed_tags, attributes=allowed_attributes, strip=False)
         return sanitized_html
     else:
         return "error"
 
-#@validate_origin
 @app.route('/api/v1/pairings', methods=['POST'])
+@validate_origin
 def pairings():
     # Use this endpoint with the following curl command:
     # curl -X POST -H "Origin: https://llmmmm.com" http://localhost:5000/api/v1/pairings -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'

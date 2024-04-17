@@ -1,6 +1,6 @@
-# LLMmMm
+# LLMmMm😋 [https://LLMmMm.com](https://llmmmm.com)
 
-A simple flask API and static webpage that connects to OpenRouter
+A free and open source LLM-powered Sommelier. Made viasimple flask API and static webpage that connects to [OpenRouter](https://openrouter.ai/).
 
 # Prerequisites
 
@@ -8,7 +8,7 @@ A simple flask API and static webpage that connects to OpenRouter
 * a bash shell
 * an ```OPENROUTER_API_KEY``` saved as an environment variable (look it up)
 
-# Running the code
+# Running the server
 
 * clone this repository
 * ```cd``` to the project directory
@@ -16,7 +16,8 @@ A simple flask API and static webpage that connects to OpenRouter
 * ```bash run.sh```
 
 # TODO
-
-* Add simple static homepage
-* Route Github pages and add https
-* Test
+* Add a 'loading' animation
+* Hide the div before the pairings are loaded
+* write an explainer about what this is and why it is slow (because it is free)
+* Spin up a proper server, change from localhost in html, keep port 5000?
+* Share with Elyse
