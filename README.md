@@ -117,6 +117,8 @@ This guide will walk you through the steps to set up your Flask server with SSL 
    bash build.sh
    ```
 
+4. Edit the ```run.sh``` script for produciton, replace the ```-it``` flag with a ```-d``` flag. 
+
 4. Run the Docker container:
    ```
    bash run.sh
