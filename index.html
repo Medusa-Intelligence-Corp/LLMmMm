@@ -88,7 +88,7 @@
             
             try {
                 document.getElementById('result').innerHTML = '<p>&#129302; Sending request to a free LLM API at <a href="https://openrouter.ai/docs#models" target="_blank">OpenRouter</a>, this could take a minute &#8987;.';
-                const response = await fetch('http://104.207.133.25:5000/api/v1/pairings', requestOptions);
+                const response = await fetch('http://api.llmmmm.com/api/v1/pairings', requestOptions);
                 const data = await response.json();
                 document.getElementById('result').innerHTML = data.analysis;
             } catch (error) {
