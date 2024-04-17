@@ -74,6 +74,14 @@ def pairings():
     return jsonify(analysis=analysis), 200
 
 
+@app.route('/api/v1/test', methods=['POST'])
+def test():
+    # Use this endpoint with the following curl command:
+    # curl -X POST -H "Origin: https://llmmmm.com" http://localhost:5000/api/v1/test -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'
+    return jsonify(analysis="wet wine"), 200
+
+
+
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
 
