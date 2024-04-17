@@ -29,13 +29,22 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
+        
+        .form-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        input[type="text"] {
-            width: calc(100% - 22px);
+    
+        #dishName {
+            width: 250px;
+            height: 100px;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            resize: none;
         }
 
         input[type="submit"] {
@@ -60,6 +69,9 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        .hidden {
+            display: none;
+        }
 
     </style>
     <script>
@@ -72,7 +84,10 @@
                 body: JSON.stringify({ menu_item: menuItem })
             };
 
+            document.getElementById("result").classList.remove("hidden");
+            
             try {
+                document.getElementById('result').innerHTML = '<p>&#129302; Sending request to a free LLM API at <a href="https://openrouter.ai/docs#models" target="_blank">OpenRouter</a>, this could take a minute &#8987;.';
                 const response = await fetch('http://localhost:5000/api/v1/pairings', requestOptions);
                 const data = await response.json();
                 document.getElementById('result').innerHTML = data.analysis;
@@ -86,11 +101,12 @@
 <body>
     <h1>LLMmMm &#128523;</h1>
     <form onsubmit="fetchDishPairings()">
-        <label for="dishName">Enter a Food Menu Item:</label><br>
-        <input type="text" id="dishName" name="dishName"><br>
-        <input type="submit" value="Get Pairings &#127863;">
+        <div class="form-content">
+        <textarea id="dishName" name="dishName" placeholder="Enter the name of a food (like 'Spaghetti Carbonara') and an LLM pick the wine."></textarea><br>
+        <input type="submit" value="Get Wine Pairings &#127863;">
+        </div>
     </form>
-    <div id="result"></div>
+    <div class="hidden" id="result"></div>
 </body>
 </html>
 
