@@ -13,12 +13,10 @@ A simple flask API and static webpage that connects to OpenRouter
 * clone this repository
 * ```cd``` to the project directory
 * ```bash build.sh```
-* ```bash runp.sh```
-* visit ```index.html``` from your web browser
+* ```bash run.sh```
 
 # TODO
 
-* Add better html sanitizing
 * Add simple static homepage
-* Add CORS to prevent API leakage
-
+* Route Github pages and add https
+* Test

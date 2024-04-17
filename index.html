@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLMmMm - LLM-powered wine pairings</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+    </style>
+    <script>
+        async function fetchDishPairings() {
+            event.preventDefault();
+            const menuItem = document.getElementById('dishName').value;
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ menu_item: menuItem })
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/api/v1/pairings', requestOptions);
+                const data = await response.json();
+                document.getElementById('result').innerHTML = data.analysis;
+            } catch (error) {
+                console.error('Error fetching dish pairings:', error);
+                document.getElementById('result').innerHTML = '<p>Error fetching dish pairings. Please try again.</p>';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>LLMmMm &#128523;</h1>
+    <form onsubmit="fetchDishPairings()">
+        <label for="dishName">Enter a Food Menu Item:</label><br>
+        <input type="text" id="dishName" name="dishName"><br>
+        <input type="submit" value="Get Pairings &#127863;">
+    </form>
+    <div id="result"></div>
+</body>
+</html>
+
