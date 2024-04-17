@@ -31,6 +31,12 @@ This guide will walk you through the steps to set up your Flask server with SSL 
    sudo apt-get install -y --no-install-recommends certbot nginx
    ```
 
+1. Open ports 80 and 443 for http and https
+   ```
+   sudo ufw allow 80/tcp
+   sudo ufw allow 443/tcp
+   ```
+
 2. Stop the Nginx service temporarily:
    ```
    sudo systemctl stop nginx

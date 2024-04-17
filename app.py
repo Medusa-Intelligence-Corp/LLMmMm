@@ -5,9 +5,10 @@ import requests
 import bleach
 
 from flask import Flask, jsonify, request, render_template_string
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
 def analyze_menu_item(menu_text):
     response = requests.post(
