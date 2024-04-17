@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --no-cache-dir --upgrade pip \
     && pip3 install --no-cache-dir \
     flask \
+    flask-cors \
     requests \
     gunicorn \
     bleach
