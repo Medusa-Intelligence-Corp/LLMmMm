@@ -49,33 +49,33 @@ This guide will walk you through the steps to set up your Flask server with SSL 
    ```
 
 2. Add the following configuration to the file:
-   ```nginx
-server {
-    listen 80;
-    server_name api.llmmmm.com;
-    return 301 https://$server_name$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name api.llmmmm.com;
-
-    ssl_certificate /etc/letsencrypt/live/api.llmmmm.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.llmmmm.com/privkey.pem;
-
-    location / {
-        proxy_pass http://localhost:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-
-        # Add the following lines to include CORS headers
-        proxy_set_header Access-Control-Allow-Origin "https://llmmmm.com";
-        proxy_set_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
-        proxy_set_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range";
-        proxy_set_header Access-Control-Expose-Headers "Content-Length,Content-Range";
+   ```
+    server {
+        listen 80;
+        server_name api.llmmmm.com;
+        return 301 https://$server_name$request_uri;
     }
-}
-```
+
+    server {
+        listen 443 ssl;
+        server_name api.llmmmm.com;
+
+        ssl_certificate /etc/letsencrypt/live/api.llmmmm.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/api.llmmmm.com/privkey.pem;
+
+        location / {
+            proxy_pass http://localhost:5000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+
+            # Add the following lines to include CORS headers
+            proxy_set_header Access-Control-Allow-Origin "https://llmmmm.com";
+            proxy_set_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            proxy_set_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range";
+            proxy_set_header Access-Control-Expose-Headers "Content-Length,Content-Range";
+        }
+    }
+    ```
 
 3. Save the file and exit the editor.
 
