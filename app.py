@@ -51,7 +51,7 @@ def analyze_menu_item(menu_text):
             'a',  # Hyperlinks
             'br',  # Line break
             'hr',  # Horizontal rule
-            'span',  # Span for inline elements
+            'div','span',  # Span for inline elements
             'code', 'pre',  # Code blocks and preformatted text
             'sup', 'sub',  # Superscript and subscript
             'dl', 'dt', 'dd',  # Description lists
