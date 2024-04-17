@@ -1,6 +1,0 @@
-flask
-flask-cors
-pyopenssl
-requests
-gunicorn
-bleach
