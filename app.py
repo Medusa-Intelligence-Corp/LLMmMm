@@ -87,6 +87,5 @@ def pairings():
 
 
 if __name__ == '__main__':
-    #NOTE if locally developing, change this port to 5000 or something, in the Dockerfile as well
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=5000)
 
