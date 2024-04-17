@@ -61,7 +61,7 @@ def analyze_menu_item(menu_text):
 
         # Use bleach to clean the HTML
         sanitized_html = bleach.clean(text_response,\
-                tags=allowed_tags, attributes=allowed_attributes, strip=False)
+                tags=allowed_tags, attributes=allowed_attributes, strip=True)
         return sanitized_html
     else:
         return "error"
