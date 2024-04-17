@@ -5,19 +5,8 @@ import requests
 import bleach
 
 from flask import Flask, jsonify, request, render_template_string
-from flask_cors import CORS
 
 app = Flask(__name__)
-
-CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
-
-def validate_origin(func):
-    def wrapper(*args, **kwargs):
-        # Validate the request origin
-        if request.headers.get('Origin') != 'https://llmmmm.com':
-            return jsonify({'error': 'Forbidden'}), 403
-        return func(*args, **kwargs)
-    return wrapper
 
 
 def analyze_menu_item(menu_text):
@@ -77,7 +66,6 @@ def analyze_menu_item(menu_text):
         return "error"
 
 @app.route('/api/v1/pairings', methods=['POST'])
-@validate_origin
 def pairings():
     # Use this endpoint with the following curl command:
     # curl -X POST -H "Origin: https://llmmmm.com" http://localhost:5000/api/v1/pairings -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'
