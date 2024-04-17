@@ -16,8 +16,6 @@ A free and open source LLM-powered Sommelier. Try it now at [LLMmMm.com](https:/
 * ```bash run.sh```
 
 # TODO
-* Add a 'loading' animation
-* Hide the div before the pairings are loaded
-* write an explainer about what this is and why it is slow (because it is free)
-* Spin up a proper server, change from localhost in html, keep port 5000?
-* Share with Elyse
+* Setup letsencrypt on debian server
+* Support https everywhere
+* Deploy

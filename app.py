@@ -4,6 +4,8 @@ import json
 import requests
 import bleach
 
+import ssl
+
 from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 
@@ -87,5 +89,8 @@ def pairings():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    #TODO let's encrypt setup
+    context.load_cert_chain('path/to/your/certificate.crt', 'path/to/your/private.key')
+    app.run(ssl_context=context, host='0.0.0.0', port=5000)
 
