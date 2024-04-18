@@ -21,6 +21,7 @@ RUN pip3 install --no-cache-dir --upgrade pip \
     flask-cors \
     requests \
     gunicorn \
+    cachetools \
     bleach
 
 COPY . .

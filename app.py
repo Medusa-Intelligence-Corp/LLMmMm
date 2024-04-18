@@ -1,25 +1,45 @@
 import os
 import json
+import random
 
 import requests
 import bleach
 
+from cachetools import TTLCache
+
 from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
+
+model_cache = TTLCache(maxsize=1, ttl=3600)
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
 def analyze_menu_item(menu_text):
+
+    try:
+        free_models = model_cache["models"]
+    except KeyError:
+        endpoint = "https://openrouter.ai/api/v1/models"
+        response = requests.get(endpoint, headers={'Authorization':\
+                f"Bearer {os.environ.get('OPENROUTER_API_KEY')}"})
+        api_result = response.json()
+        free_models = []
+        for model in api_result["data"]:
+            if model["pricing"]["prompt"] == "0" and model["pricing"]["completion"] == "0":
+                free_models.append(model["id"])
+        model_cache["models"]=free_models
+    
     response = requests.post(
       url="https://openrouter.ai/api/v1/chat/completions",
       headers={
         "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY')}",
-        "HTTP-Referer": "https://llmmmm.com", # Optional, for including your app on openrouter.ai rankings.
-        "X-Title": "LLMmMm", # Optional. Shows in rankings on openrouter.ai.
+        "HTTP-Referer": "https://llmmmm.com", 
+        "X-Title": "LLMmMm" 
       },
       data=json.dumps({
-        "model": "mistralai/mistral-7b-instruct:free", # Choose from https://openrouter.ai/docs#models 
+        "models": random.sample(free_models,2),
+        "route": "fallback",
         "messages": [
           {"role": "user", "content": f"""Embrace the role of a master sommelier. I will present you with a selection from the menu, and your task is to provide the best wine pairings to pair with a given menu item. For each dish, specify the ideal wine variety, region, vintage, and any pertinent pairing nuances. Should a dish favor an alternative beverage—be it beer, coffee, cocktail, or another—advise accordingly. Your recommendations should be captivating and informed, as they are crucial for my professional endeavors. Also please format your response in html and add emojis for flair.
 
