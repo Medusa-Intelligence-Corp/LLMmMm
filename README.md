@@ -2,9 +2,6 @@
 
 A free and open source LLM-powered Sommelier. Try it now at [LLMmMm.com](https://llmmmm.com). Made via a simple flask API and static webpage that connects to [OpenRouter](https://openrouter.ai/).
 
-# TODO
-* Pull model list via API and filter the free ones, choose one (and cache the choice 1x per hour) https://openrouter.ai/api/v1/models
-
 # Testing
 
 * install docker
