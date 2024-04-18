@@ -96,8 +96,7 @@
                 const data = await response.json();
                 document.getElementById('result').innerHTML = data.analysis;
             } catch (error) {
-                console.error('Error fetching dish pairings:', error);
-                document.getElementById('result').innerHTML = '<p>Error fetching dish pairings. Please try again.</p>';
+                document.getElementById('result').innerHTML = '<p>Error fetching dish pairings. Please try again. Free APIs are sometimes finicky, Sorry! &#129335;</p>';
             }
         }
     </script>
