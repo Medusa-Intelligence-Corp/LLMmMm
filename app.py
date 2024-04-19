@@ -15,8 +15,10 @@ model_cache = TTLCache(maxsize=1, ttl=3600)
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
-def analyze_menu_item(menu_text):
-
+def get_best_free_models():
+    FIRST_CHOICE_MODEL = "mistralai/mistral-7b-instruct:free"
+    SECOND_CHOICE_MODEL = "openchat/openchat-7b:free"
+    
     try:
         free_models = model_cache["models"]
     except KeyError:
@@ -29,7 +31,27 @@ def analyze_menu_item(menu_text):
             if model["pricing"]["prompt"] == "0" and model["pricing"]["completion"] == "0":
                 free_models.append(model["id"])
         model_cache["models"]=free_models
+
+    if FIRST_CHOICE_MODEL in free_models and SECOND_CHOICE_MODEL in free_models:
+        models = [FIRST_CHOICE_MODEL, SECOND_CHOICE_MODEL]
+    elif FIRST_CHOICE_MODEL in free_models:
+        models = [FIRST_CHOICE_MODEL]
+        models.append(\
+                random.choice([model for model in free_models \
+                if model != FIRST_CHOICE_MODEL]))
+    elif SECOND_CHOICE_MODEL in free_models:
+        models = [SECOND_CHOICE_MODEL]              
+        models.append(\
+                random.choice([model for model in free_models \
+                if model != SECOND_CHOICE_MODEL]))
+    else:
+        models = random.sample(free_models,2)
     
+    return models
+
+
+def analyze_menu_item(menu_text):
+
     response = requests.post(
       url="https://openrouter.ai/api/v1/chat/completions",
       headers={
@@ -38,7 +60,7 @@ def analyze_menu_item(menu_text):
         "X-Title": "LLMmMm" 
       },
       data=json.dumps({
-        "models": random.sample(free_models,2),
+        "models": get_best_free_models(),
         "route": "fallback",
         "messages": [
           {"role": "user", "content": f"""Embrace the role of a master sommelier. I will present you with a selection from the menu, and your task is to provide the best wine pairings to pair with a given menu item. For each dish, specify the ideal wine variety, region, vintage, and any pertinent pairing nuances. Should a dish favor an alternative beverage—be it beer, coffee, cocktail, or another—advise accordingly. Your recommendations should be captivating and informed, as they are crucial for my professional endeavors. Also please format your response in html and add emojis for flair.
