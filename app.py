@@ -10,17 +10,25 @@ from cachetools import TTLCache
 from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 
-model_cache = TTLCache(maxsize=1, ttl=3600)
+model_cache = TTLCache(maxsize=5, ttl=3600)
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "https://llmmmm.com"}})
 
 def get_best_free_models():
-    FIRST_CHOICE_MODEL = "mistralai/mistral-7b-instruct:free"
-    SECOND_CHOICE_MODEL = "openchat/openchat-7b:free"
-    
+    first_choice_model = "mistralai/mistral-7b-instruct:free"
+    second_choice_model = "openchat/openchat-7b:free"
+ 
+    try: 
+        #if the first_choice model is hitting API limits, fall back to the second and a random model
+        last_model = model_cache["last_model"]
+        if last_model != first_choice_model:
+            first_choice_model = "xxxxxxxxxxxxxx"
+    except KeyError:
+        pass
+
     try:
-        free_models = model_cache["models"]
+        free_models = model_cache["free_models"]
     except KeyError:
         endpoint = "https://openrouter.ai/api/v1/models"
         response = requests.get(endpoint, headers={'Authorization':\
@@ -30,20 +38,20 @@ def get_best_free_models():
         for model in api_result["data"]:
             if model["pricing"]["prompt"] == "0" and model["pricing"]["completion"] == "0":
                 free_models.append(model["id"])
-        model_cache["models"]=free_models
+        model_cache["free_models"]=free_models
 
-    if FIRST_CHOICE_MODEL in free_models and SECOND_CHOICE_MODEL in free_models:
-        models = [FIRST_CHOICE_MODEL, SECOND_CHOICE_MODEL]
-    elif FIRST_CHOICE_MODEL in free_models:
-        models = [FIRST_CHOICE_MODEL]
+    if first_choice_model in free_models and second_choice_model in free_models:
+        models = [first_choice_model, second_choice_model]
+    elif first_choice_model in free_models:
+        models = [first_choice_model]
         models.append(\
                 random.choice([model for model in free_models \
-                if model != FIRST_CHOICE_MODEL]))
-    elif SECOND_CHOICE_MODEL in free_models:
-        models = [SECOND_CHOICE_MODEL]              
+                if model != first_choice_model]))
+    elif second_choice_model in free_models:
+        models = [second_choice_model]              
         models.append(\
                 random.choice([model for model in free_models \
-                if model != SECOND_CHOICE_MODEL]))
+                if model != second_choice_model]))
     else:
         models = random.sample(free_models,2)
     
@@ -74,6 +82,9 @@ def analyze_menu_item(menu_text):
     )
     
     response_data = response.json()
+    
+    if 'model' in response_data:
+        model_cache['last_model'] = response_data['model']
 
     if 'choices' in response_data and len(response_data['choices']) > 0:
         text_response = response_data['choices'][0]\
