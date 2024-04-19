@@ -20,10 +20,12 @@ def get_best_free_models():
     second_choice_model = "openchat/openchat-7b:free"
  
     try: 
-        #if the first_choice model is hitting API limits, fall back to the second and a random model
+        #if the first_choice model is hitting API limits, fall back to other cheap/free models
+        #it's important that the original first_choice model is in this list otherwise it'll
+        #basically never be first ever again.
         last_model = model_cache["last_model"]
         if last_model != first_choice_model:
-            first_choice_model = "xxxxxxxxxxxxxx"
+            first_choice_model = random.choice(["google/gemma-7b-it:free","mistralai/mistral-7b-instruct:free","meta-llama/llama-3-8b-instruct"])
     except KeyError:
         pass
 
