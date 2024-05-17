@@ -91,7 +91,7 @@
             document.getElementById("result").classList.remove("hidden");
             
             try {
-                document.getElementById('result').innerHTML = '<p>&#129302; Sending request to a free LLM API at <a href="https://openrouter.ai/docs#models" target="_blank">OpenRouter</a>, this could take a minute &#8987;.';
+                document.getElementById('result').innerHTML = '<p>&#129302; Sending request to a free LLM API at <a href="https://openrouter.ai/docs#models" target="_blank">OpenRouter</a>, this could take a minute &#8987;.</p>';
                 const response = await fetch('https://api.llmmmm.com/api/v1/pairings', requestOptions);
                 const data = await response.json();
                 document.getElementById('result').innerHTML = data.analysis;
