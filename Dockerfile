@@ -19,9 +19,8 @@ RUN pip3 install --no-cache-dir --upgrade pip \
     && pip3 install --no-cache-dir \
     flask \
     flask-cors \
-    requests \
     gunicorn \
-    cachetools \
+    smartenough \
     bleach
 
 COPY . .

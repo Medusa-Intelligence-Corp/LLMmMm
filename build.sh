@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build -t sommelier .
+sudo podman build -t sommelier .

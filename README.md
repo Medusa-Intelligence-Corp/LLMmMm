@@ -19,7 +19,7 @@ This guide will walk you through the steps to set up your Flask server with SSL 
 
 - Debian or Ubuntu-based operating system
 - ```OPENROUTER_API_KEY``` saved as an environment variable
-- Docker installed
+- Podman installed [see Podman Guide](https://podman.io/docs/installation)
 
 ## Installation
 
@@ -110,16 +110,16 @@ This guide will walk you through the steps to set up your Flask server with SSL 
    cd your-repository
    ```
 
-3. Build the Docker image:
+3. Build the Podman image:
    ```
    bash build.sh
    ```
 
 4. Edit the ```run.sh``` script for produciton, replace the ```-it``` flag with a ```-d``` flag. 
 
-4. Run the Docker container:
+4. Run the Podman container:
    ```
-   bash run.sh
+   bash run_prod.sh
    ```
 
 Your Flask server should now be up and running with SSL enabled, accessible at ```https://api.llmmmm.com```.
