@@ -18,10 +18,44 @@ def pairings():
     # curl -X POST -H "Origin: https://llmmmm.com" http://localhost:5000/api/v1/pairings -H "Content-Type: application/json" -d '{"menu_item":"Spaghetti Carbonara"}'
     data = request.json
     
-    instructions = """Embrace the role of a master sommelier. I will present you with a selection from the menu, and your task is to provide the best wine pairings to pair with a given menu item. For each dish, specify the ideal wine variety, region, vintage, and any pertinent pairing nuances. Should a dish favor an alternative beverage—be it beer, coffee, cocktail, or another—advise accordingly. Your recommendations should be captivating and informed, as they are crucial for my professional endeavors. Also please format your response in valid html and add emojis for flair.
+    instructions = """
+You are a master sommelier. Your task is to provide expert wine pairings for given menu items. For each dish:
 
-    Menu item: 
-    """
+1. Recommend the best wine pairing, specifying:
+   - Wine variety
+   - Region
+   - Vintage (if applicable)
+   - Key pairing notes
+
+2. If a non-wine beverage is more suitable (e.g., beer, cocktail, coffee), recommend it instead.
+
+3. Provide brief, engaging explanations for your choices.
+
+4. Use emojis to add visual flair to your response.
+
+Your recommendations are for professional use, so ensure they are well-informed and compelling.
+
+Example recommendation in HTML:
+
+```html
+<div class="wine-pairing">
+  <h2>🍝 Pasta Primavera</h2>
+  <h3>🍷 Recommended Pairing: Sauvignon Blanc</h3>
+  <ul>
+    <li><strong>Variety:</strong> Sauvignon Blanc</li>
+    <li><strong>Region:</strong> Loire Valley, France</li>
+    <li><strong>Vintage:</strong> 2022</li>
+    <li><strong>Pairing Notes:</strong> The crisp acidity and herbaceous notes of a Loire Valley Sauvignon Blanc beautifully complement the fresh vegetables in Pasta Primavera. The wine's zesty citrus flavors enhance the dish's light cream sauce, while its mineral undertones provide a refreshing contrast. 🌿🍋</li>
+  </ul>
+  <p>This pairing elevates the spring-like qualities of the dish, creating a harmonious and refreshing dining experience. 🌸👨‍🍳</p>
+</div>
+
+
+Below is the menu item I want you to create a pairing for. Ensure you return the response in HTML format. Only return valid html.
+
+## Menu Item: {{ menu_item }}
+```
+"""
 
     text_response = get_smart_answer(instructions, data['menu_item'], "OpenRouter", "html")
         
